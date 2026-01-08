@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Iconos Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
         /* --- VARIABLES Y RESET --- */
@@ -17,16 +19,18 @@
             --primary-light: #14b8a6;
             --secondary: #1e293b;
             --accent: #f59e0b;
+            --whatsapp: #25d366;
             --background: #ffffff;
             --surface: #f8fafc;
             --text-main: #1e293b;
             --text-muted: #64748b;
             --border: #e2e8f0;
+            --border-accent: rgba(15, 118, 110, 0.1);
             --radius-sm: 8px;
             --radius-md: 16px;
             --radius-lg: 24px;
             --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-            --shadow-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --shadow-hover: 0 25px 50px -12px rgb(0 0 0 / 0.15);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -69,7 +73,6 @@
         }
         .nav-links a:hover, .nav-links a.active { color: var(--primary); }
 
-        /* Menú Móvil */
         .menu-toggle {
             display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1001;
         }
@@ -77,61 +80,86 @@
             width: 28px; height: 3px; background: var(--primary);
             transition: var(--transition); border-radius: 2px;
         }
-        /* Animación hamburguesa */
         .menu-toggle.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
         .menu-toggle.open span:nth-child(2) { opacity: 0; }
         .menu-toggle.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
 
         /* --- HERO --- */
         .hero {
-            position: relative; min-height: 100vh; display: flex; align-items: center;
-            background: radial-gradient(circle at top right, #f0fdfa, #ffffff);
-            overflow: hidden; padding-top: 80px;
+            position: relative; 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center;
+            background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.85)), 
+                        url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=2000');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            overflow: hidden; 
+            padding-top: 80px;
         }
         .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; color: var(--secondary); margin-bottom: 1.5rem; font-weight: 800; }
         .hero p { font-size: 1.25rem; color: var(--text-muted); margin-bottom: 2.5rem; max-width: 600px; }
         .btn {
-            display: inline-block; padding: 1rem 2.5rem; border-radius: var(--radius-sm);
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            padding: 1rem 2.5rem; border-radius: var(--radius-sm);
             font-weight: 600; text-decoration: none; transition: var(--transition);
             cursor: pointer; border: none;
         }
         .btn-primary { background: var(--primary); color: white; box-shadow: 0 10px 15px -3px rgba(15, 118, 110, 0.3); }
-        .btn-primary:hover { background: var(--primary-light); transform: translateY(-2px); }
+        .btn-primary:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 20px 25px -5px rgba(15, 118, 110, 0.4); }
 
         /* --- SERVICIOS --- */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
         .card {
-            background: var(--surface); padding: 3rem 2rem; border-radius: var(--radius-md);
-            border: 1px solid var(--border); transition: var(--transition);
+            background: white; padding: 3rem 2rem; border-radius: var(--radius-md);
+            border: 1px solid var(--border-accent); transition: var(--transition);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-        .card:hover { background: white; transform: translateY(-10px); box-shadow: var(--shadow-hover); border-color: transparent; }
+        .card:hover { transform: translateY(-12px); box-shadow: var(--shadow-hover); border-color: transparent; }
         .card-icon {
-            width: 60px; height: 60px; background: white; border-radius: var(--radius-sm);
-            display: flex; align-items: center; justify-content: center; font-size: 1.75rem;
-            margin-bottom: 1.5rem; box-shadow: var(--shadow); color: var(--primary);
+            width: 64px; height: 64px; background: var(--surface); border-radius: var(--radius-sm);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 1.5rem; color: var(--primary); transition: var(--transition);
         }
+        .card:hover .card-icon { background: var(--primary); color: white; }
 
-        /* --- TESTIMONIOS (NUEVO) --- */
+        /* --- TESTIMONIOS --- */
         .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
         .testimonial-card {
-            background: white; padding: 2rem; border-radius: var(--radius-md);
-            border: 1px solid var(--border); box-shadow: var(--shadow);
+            background: white; padding: 2.5rem; border-radius: var(--radius-md);
+            border: 1px solid var(--border); box-shadow: var(--shadow); transition: var(--transition);
         }
+        .testimonial-card:hover { transform: scale(1.02); }
         .testimonial-text { font-style: italic; color: var(--text-main); margin-bottom: 1.5rem; font-size: 1rem; position: relative; }
         .testimonial-text::before { content: '"'; font-size: 3rem; color: var(--primary); opacity: 0.2; position: absolute; top: -20px; left: -10px; }
         .testimonial-user { display: flex; align-items: center; gap: 1rem; }
-        .user-avatar { width: 50px; height: 50px; background: var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--primary); }
+        .user-avatar { width: 48px; height: 48px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; }
         .user-info h4 { font-size: 1rem; color: var(--secondary); }
         .user-info p { font-size: 0.85rem; color: var(--text-muted); }
 
-        /* --- TARIFAS (NUEVO) --- */
-        .rates-table-container { background: var(--surface); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border); max-width: 800px; margin: 0 auto; }
+        /* --- TARIFAS --- */
+        .rates-table-container { background: white; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border); max-width: 900px; margin: 0 auto; box-shadow: var(--shadow); }
         .rates-table { width: 100%; border-collapse: collapse; text-align: left; }
-        .rates-table th { background: var(--secondary); color: white; padding: 1.25rem 1.5rem; font-weight: 600; }
-        .rates-table td { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); }
+        .rates-table th { 
+            background: linear-gradient(to right, var(--primary), var(--primary-light)); 
+            color: white; padding: 1.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.85rem;
+        }
+        .rates-table td { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); color: var(--text-main); }
+        .rates-table tr:nth-child(even) { background-color: rgba(15, 118, 110, 0.03); }
         .rates-table tr:last-child td { border-bottom: none; }
-        .rates-table tr:hover { background: rgba(15, 118, 110, 0.05); }
-        .price-tag { font-weight: 700; color: var(--primary); font-size: 1.1rem; }
+        .rates-table tr:hover { background-color: rgba(15, 118, 110, 0.08); transition: var(--transition); }
+        .price-tag { font-weight: 700; color: var(--primary); font-size: 1.15rem; }
+
+        /* --- BOTÓN WHATSAPP FLOTANTE --- */
+        .whatsapp-float {
+            position: fixed; bottom: 30px; right: 30px; 
+            width: 60px; height: 60px; background-color: var(--whatsapp);
+            color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 999; text-decoration: none;
+            transition: var(--transition);
+        }
+        .whatsapp-float:hover { transform: scale(1.1) rotate(5deg); background-color: #1eb954; box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
 
         /* --- CONTACTO --- */
         .contact-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 4rem; }
@@ -145,7 +173,8 @@
         .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.1); }
 
         /* --- FOOTER --- */
-        footer { padding: 4rem 0; background: var(--surface); border-top: 1px solid var(--border); text-align: center; }
+        footer { padding: 4rem 0; background: var(--secondary); color: rgba(255,255,255,0.7); border-top: none; text-align: center; }
+        footer p { font-size: 0.9rem; }
 
         /* --- REVEAL ANIMATION --- */
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
@@ -164,17 +193,23 @@
             .contact-layout { grid-template-columns: 1fr; }
             .hero { text-align: center; }
             .hero p { margin: 0 auto 2.5rem; }
+            .whatsapp-float { bottom: 20px; right: 20px; width: 50px; height: 50px; }
         }
     </style>
 </head>
 <body>
+
+    <!-- BOTÓN WHATSAPP -->
+    <a href="https://wa.me/34912345678" class="whatsapp-float" target="_blank" title="Contactar por WhatsApp">
+        <i data-lucide="message-circle" size="30"></i>
+    </a>
 
     <!-- NAVEGACIÓN -->
     <header id="header">
         <div class="container">
             <nav>
                 <a href="#" class="logo">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                    <i data-lucide="activity"></i>
                     FisioVital
                 </a>
                 <ul class="nav-links" id="nav-menu">
@@ -199,7 +234,10 @@
             <div class="hero-content">
                 <h1>Recupera tu vitalidad sin dolor.</h1>
                 <p>Expertos en fisioterapia avanzada. Utilizamos técnicas de vanguardia para que vuelvas a tu rutina en tiempo récord.</p>
-                <a href="#contacto" class="btn btn-primary">Agendar mi Cita</a>
+                <a href="#contacto" class="btn btn-primary">
+                    <i data-lucide="calendar"></i>
+                    Agendar mi Cita
+                </a>
             </div>
         </div>
     </section>
@@ -209,34 +247,40 @@
         <div class="container">
             <div class="text-center reveal">
                 <h2 class="section-title">Nuestras Especialidades</h2>
-                <p class="section-subtitle">Soluciones personalizadas para cada tipo de lesión.</p>
+                <p class="section-subtitle">Soluciones personalizadas con base científica.</p>
             </div>
             <div class="grid">
                 <div class="card reveal">
-                    <div class="card-icon">🏃</div>
-                    <h3>Deportiva</h3>
-                    <p>Tratamiento de élite para deportistas. Readaptación y prevención de lesiones.</p>
+                    <div class="card-icon">
+                        <i data-lucide="running" size="32"></i>
+                    </div>
+                    <h3>Fisioterapia Deportiva</h3>
+                    <p>Tratamiento de élite para deportistas de alto rendimiento y aficionados. Readaptación y prevención avanzada.</p>
                 </div>
                 <div class="card reveal">
-                    <div class="card-icon">💆</div>
+                    <div class="card-icon">
+                        <i data-lucide="hand" size="32"></i>
+                    </div>
                     <h3>Terapia Manual</h3>
-                    <p>Técnicas manuales específicas para restaurar la movilidad articular y muscular.</p>
+                    <p>Técnicas de movilización y manipulación articular para restaurar el movimiento y aliviar tensiones.</p>
                 </div>
                 <div class="card reveal">
-                    <div class="card-icon">🦴</div>
+                    <div class="card-icon">
+                        <i data-lucide="bone" size="32"></i>
+                    </div>
                     <h3>Osteopatía</h3>
-                    <p>Enfoque holístico para equilibrar los sistemas del cuerpo y aliviar el dolor crónico.</p>
+                    <p>Abordaje global del cuerpo para tratar desequilibrios estructurales y dolores persistentes.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- TESTIMONIOS (NUEVO) -->
+    <!-- TESTIMONIOS -->
     <section id="testimonios" class="section-padding" style="background: var(--surface);">
         <div class="container">
             <div class="text-center reveal">
                 <h2 class="section-title">Lo que dicen nuestros pacientes</h2>
-                <p class="section-subtitle">La confianza y satisfacción de quienes ya se han recuperado con nosotros.</p>
+                <p class="section-subtitle">Casos reales de recuperación exitosa en nuestra clínica.</p>
             </div>
             <div class="testimonials-grid">
                 <div class="testimonial-card reveal">
@@ -245,22 +289,22 @@
                         <div class="user-avatar">JP</div>
                         <div class="user-info">
                             <h4>Juan Pérez</h4>
-                            <p>Paciente de Traumatología</p>
+                            <p>Paciente habitual</p>
                         </div>
                     </div>
                 </div>
                 <div class="testimonial-card reveal">
-                    <p class="testimonial-text">El trato es inmejorable. Como deportista, valoro mucho que entiendan la urgencia de volver a entrenar.</p>
+                    <p class="testimonial-text">El trato es inmejorable. Como deportista, valoro mucho que entiendan la urgencia de volver a entrenar pronto.</p>
                     <div class="testimonial-user">
                         <div class="user-avatar">MG</div>
                         <div class="user-info">
                             <h4>María García</h4>
-                            <p>Corredora Amateur</p>
+                            <p>Triatleta Amateur</p>
                         </div>
                     </div>
                 </div>
                 <div class="testimonial-card reveal">
-                    <p class="testimonial-text">Instalaciones modernas y un equipo muy humano. Te explican todo el proceso de recuperación claramente.</p>
+                    <p class="testimonial-text">Instalaciones modernas y un equipo muy humano. Te explican todo el proceso claramente, sin tecnicismos.</p>
                     <div class="testimonial-user">
                         <div class="user-avatar">CL</div>
                         <div class="user-info">
@@ -273,25 +317,30 @@
         </div>
     </section>
 
-    <!-- TARIFAS (NUEVO) -->
+    <!-- TARIFAS -->
     <section id="tarifas" class="section-padding">
         <div class="container">
             <div class="text-center reveal">
                 <h2 class="section-title">Tarifas Transparentes</h2>
-                <p class="section-subtitle">Invierte en tu salud con precios competitivos y sin sorpresas.</p>
+                <p class="section-subtitle">Invierte en tu bienestar con precios claros desde el primer día.</p>
             </div>
             <div class="rates-table-container reveal">
                 <table class="rates-table">
                     <thead>
                         <tr>
-                            <th>Servicio</th>
-                            <th>Duración</th>
-                            <th>Precio</th>
+                            <th>Servicio Especializado</th>
+                            <th>Sesión</th>
+                            <th>Inversión</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Sesión de Fisioterapia General</td>
+                            <td>Valoración Inicial + Fisioterapia</td>
+                            <td>60 min</td>
+                            <td><span class="price-tag">50€</span></td>
+                        </tr>
+                        <tr>
+                            <td>Sesión Fisioterapia de Seguimiento</td>
                             <td>50 min</td>
                             <td><span class="price-tag">45€</span></td>
                         </tr>
@@ -301,13 +350,13 @@
                             <td><span class="price-tag">55€</span></td>
                         </tr>
                         <tr>
-                            <td>Sesión de Osteopatía</td>
+                            <td>Osteopatía Estructural / Visceral</td>
                             <td>50 min</td>
                             <td><span class="price-tag">50€</span></td>
                         </tr>
                         <tr>
-                            <td>Bono 5 Sesiones (Ahorro 10%)</td>
-                            <td>Variado</td>
+                            <td>Bono 5 Sesiones (Uso familiar)</td>
+                            <td>5 Sesiones</td>
                             <td><span class="price-tag">200€</span></td>
                         </tr>
                     </tbody>
@@ -322,10 +371,12 @@
             <div class="contact-layout">
                 <div class="contact-info reveal">
                     <h2 class="section-title">Contacto</h2>
-                    <p style="margin-bottom: 2rem;">¿Tienes alguna duda? Escríbenos o visítanos directamente en nuestra clínica.</p>
-                    <p>📍 Calle Bienestar 12, Madrid</p>
-                    <p>📞 +34 912 345 678</p>
-                    <p>✉️ hola@fisiovital.es</p>
+                    <p style="margin-bottom: 2rem;">¿Tienes alguna duda? Escríbenos o visítanos directamente en nuestra clínica del centro.</p>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <p style="display: flex; align-items: center; gap: 0.5rem;"><i data-lucide="map-pin" size="18" color="var(--primary)"></i> Calle Bienestar 12, Madrid</p>
+                        <p style="display: flex; align-items: center; gap: 0.5rem;"><i data-lucide="phone" size="18" color="var(--primary)"></i> +34 912 345 678</p>
+                        <p style="display: flex; align-items: center; gap: 0.5rem;"><i data-lucide="mail" size="18" color="var(--primary)"></i> hola@fisiovital.es</p>
+                    </div>
                 </div>
                 <div class="contact-form reveal">
                     <form id="mainForm">
@@ -339,9 +390,12 @@
                         </div>
                         <div class="form-group">
                             <label>Mensaje</label>
-                            <textarea rows="4" placeholder="¿En qué podemos ayudarte?"></textarea>
+                            <textarea rows="4" placeholder="¿Cómo podemos ayudarte hoy?"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">Enviar Mensaje</button>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i data-lucide="send"></i>
+                            Enviar Consulta
+                        </button>
                     </form>
                 </div>
             </div>
@@ -350,23 +404,25 @@
 
     <footer>
         <div class="container">
-            <p>© 2024 FisioVital Clínica de Fisioterapia. Salud en buenas manos.</p>
+            <p>© 2024 FisioVital Clínica de Fisioterapia. Diseño de alta calidad para tu salud.</p>
         </div>
     </footer>
 
     <script>
+        // --- INICIALIZAR ICONOS LUCIDE ---
+        lucide.createIcons();
+
         // --- LÓGICA MENÚ MÓVIL ---
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const navMenu = document.getElementById('nav-menu');
-        const navLinks = document.querySelectorAll('.nav-links a');
+        const navLinksArr = document.querySelectorAll('.nav-links a');
 
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenuBtn.classList.toggle('open');
             navMenu.classList.toggle('open');
         });
 
-        // Cerrar menú al hacer clic en un enlace
-        navLinks.forEach(link => {
+        navLinksArr.forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenuBtn.classList.remove('open');
                 navMenu.classList.remove('open');
@@ -393,7 +449,7 @@
         // --- FORMULARIO ---
         document.getElementById('mainForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            alert('¡Gracias! Hemos recibido tu solicitud. Te contactaremos en breve.');
+            alert('¡Gracias! Hemos recibido tu solicitud. Te contactaremos en menos de 24 horas.');
             e.target.reset();
         });
     </script>
